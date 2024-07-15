@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Laufbekleidung</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Laufbekleidungsempfehlung</h1>
+    </header>
+
+    <main>
+        <div id="temperature-container"></div>
+        <div id="bekleidungsempfehlung"></div> 
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Meine Laufbekleidungsempfehlung (Denis Welsch)</p>
+    </footer>
+
+    <script>
+        // API-URL
+        const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current=temperature_2m";
+
+        // Temperatur abrufen
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const temperatur = data.current.temperature_2m;
+                document.getElementById("temperature-container").textContent = `Aktuelle Temperatur: ${temperatur} °C in deiner Nähe`;
+
+        // Empfehlung für Laufbekleidung
+        function empfehlungLaufbekleidung(temperatur) {
+            if (temperatur > 25) { return "Trage eine Kopfbedeckung als Sonnenschutz, eine Sonnenbrille, Singlet, kurze Hose. Wichtig: Sonnencreme verwenden und Trinken mitnehmen";}
+            else if (temperatur >= 15) { return "Trage eine Kopfbedeckung als Sonnenschutz, eine Sonnenbrille, Funktionshirt, kurze Hose.";}
+            else if (temperatur >= 5) { return "Bei kühlem Wetter: Funktionsunterhemd, Langarmtrikot, kurze Hose oder 3/4 Hose.";}
+            else if (temperatur >= 0) { return "Bei kaltem Wetter: Mütze, Funktionsunterhemd, Fleece-Trikot, Lange-Laufhose und Handschuhe.";}
+            else { return "Bei richtig kaltem Wetter: Mütze, Funktionsunterhemd, Fleece-Trikot Softshell, Lange-Winter-Laufhose und Handschuhe.";}
+            }
+        
+            const empfehlung = empfehlungLaufbekleidung(temperatur);
+            document.getElementById("bekleidungsempfehlung").textContent = empfehlung;
+        })    
+            .catch(error => {
+                console.error("Fehler beim Abrufen der Daten:", error);
+        
+            });
+
+    </script>
+</body>
+</html>
